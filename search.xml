@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[【Python】妹子图图片全站抓取]]></title>
+    <url>%2F2017%2F10%2F29%2F%E3%80%90Python%E3%80%91%E5%A6%B9%E5%AD%90%E5%9B%BE%E5%9B%BE%E7%89%87%E5%85%A8%E7%AB%99%E6%8A%93%E5%8F%96%2F</url>
+    <content type="text"><![CDATA[环境 python3.5 scrapy1.4.0 代码 items.py 1234567# -*- coding: utf-8 -*-import scrapyclass MeiziSpiderItem(scrapy.Item): image_url = scrapy.Field() # 存放图片真实的URL refer_url = scrapy.Field() # 存放图片下载时对应的请求Refer spiders/meizi.py 123456789101112131415161718192021222324# -*- coding: utf-8 -*-from scrapy.spider import CrawlSpider, Rulefrom scrapy.linkextractors import LinkExtractorfrom MeiziSpider.items import MeiziSpiderItemclass MeiziSpider(CrawlSpider): name = &apos;meizi&apos; allowed_domains = [&apos;www.mzitu.com&apos;] start_urls = [&apos;http://www.mzitu.com/&apos;] rules = ( Rule(LinkExtractor(allow=(&apos;http://www.mzitu.com/\d&#123;1,6&#125;&apos;,)), callback=&apos;parse_item&apos;, follow=True), Rule(LinkExtractor(allow=(&apos;http://www.mzitu.com/\d&#123;1,6&#125;/\d&#123;1,3&#125;&apos;,)), callback=&apos;parse_item&apos;, follow=True), ) def parse_item(self, response): img_item = MeiziSpiderItem() img_item[&apos;image_url&apos;] = response.css(&quot;.main-image p a img::attr(src)&quot;).extract() img_item[&apos;refer_url&apos;] = response.url yield img_item pipelines.py 1234567891011121314151617181920# -*- coding: utf-8 -*-from scrapy.contrib.pipeline.images import ImagesPipelinefrom scrapy.http import Requestclass MyImagesPipeline(ImagesPipeline): def get_media_requests(self, item, info): for image_url in item[&apos;image_url&apos;]: default_headers = &#123; &apos;user-agent&apos;: &apos;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36&apos;, &apos;referer&apos;: &apos;&#123;&#125;&apos;.format(item[&apos;refer_url&apos;]) &#125; yield Request(image_url, headers=default_headers) def item_completed(self, results, item, info): return item settings.py 12345678910...ROBOTSTXT_OBEY = FalseITEM_PIPELINES = &#123; &apos;MeiziSpider.pipelines.MyImagesPipeline&apos;: 5,&#125;IMAGES_URLS_FIELD =&quot;image_url&quot; #image_url是在items.py中配置的网络爬取得图片地址#配置保存本地的地址project_dir = os.path.abspath(os.path.dirname(__file__)) #获取当前爬虫项目的绝对路径IMAGES_STORE = os.path.join(project_dir, &apos;images&apos;) #组装新的图片路径... 效果 共抓取到3G多的图片，花费1.5小时]]></content>
+      <tags>
+        <tag>Python爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2017%2F10%2F29%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
