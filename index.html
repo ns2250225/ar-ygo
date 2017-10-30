@@ -296,6 +296,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/30/Django集成Github登陆/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NS2250225">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Road of Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/30/Django集成Github登陆/" itemprop="url">Django集成Github登陆</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-30T09:54:44+08:00">
+                2017-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index">
+                    <span itemprop="name">Django</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
+<li>python3.5</li>
+<li>django1.11.6</li>
+<li>pip install social-auth-app-django</li>
+</ul>
+<hr>
+<h1 id="注册Guthub账号并获取ID和SECRET"><a href="#注册Guthub账号并获取ID和SECRET" class="headerlink" title="注册Guthub账号并获取ID和SECRET"></a>注册Guthub账号并获取ID和SECRET</h1><p><img src="http://img.blog.csdn.net/20171030120704316?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbnMyMjUwMjI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20171030120723501?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbnMyMjUwMjI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<p><img src="http://img.blog.csdn.net/20171030121717239?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbnMyMjUwMjI1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<hr>
+<h1 id="Django项目配置"><a href="#Django项目配置" class="headerlink" title="Django项目配置"></a>Django项目配置</h1><ul>
+<li>打开settings.py，配置如下内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">INSTALLED_APPS = [</div><div class="line">    <span class="string">'django.contrib.admin'</span>,</div><div class="line">    <span class="string">'django.contrib.auth'</span>,</div><div class="line">    <span class="string">'django.contrib.contenttypes'</span>,</div><div class="line">    <span class="string">'django.contrib.sessions'</span>,</div><div class="line">    <span class="string">'django.contrib.messages'</span>,</div><div class="line">    <span class="string">'django.contrib.staticfiles'</span>,</div><div class="line">    <span class="string">'social_django'</span>   <span class="comment"># 添加第三方登录库app</span></div><div class="line">]</div><div class="line"></div><div class="line"><span class="comment"># 设置登录的方式，这里是github</span></div><div class="line">AUTHENTICATION_BACKENDS = (</div><div class="line">    <span class="string">'social_core.backends.github.GithubOAuth2'</span>,</div><div class="line">    <span class="string">'django.contrib.auth.backends.ModelBackend'</span>,</div><div class="line">)</div><div class="line">SOCIAL_AUTH_URL_NAMESPACE = <span class="string">'social'</span></div><div class="line"></div><div class="line"><span class="comment"># 填写Github中获取到的KEY和SECRET</span></div><div class="line">SOCIAL_AUTH_GITHUB_KEY = <span class="string">'91c3a492abae2e8a9801'</span></div><div class="line">SOCIAL_AUTH_GITHUB_SECRET = <span class="string">'2400fedbc47b59fda64e291cf78b31d2af5ba2f9'</span></div><div class="line">SOCIAL_AUTH_GITHUB_USE_OPENID_AS_USERNAME = <span class="keyword">True</span></div><div class="line"></div><div class="line"><span class="comment"># 登陆成功后的回调路由</span></div><div class="line">SOCIAL_AUTH_LOGIN_REDIRECT_URL = <span class="string">'/index'</span></div><div class="line"></div><div class="line"><span class="comment"># 在TEMPLATES中的context_processors中增加两项</span></div><div class="line">TEMPLATES = [</div><div class="line">    &#123;</div><div class="line">        <span class="string">'BACKEND'</span>: <span class="string">'django.template.backends.django.DjangoTemplates'</span>,</div><div class="line">        <span class="string">'DIRS'</span>: [os.path.join(BASE_DIR, <span class="string">'templates'</span>)]</div><div class="line">        ,</div><div class="line">        <span class="string">'APP_DIRS'</span>: <span class="keyword">True</span>,</div><div class="line">        <span class="string">'OPTIONS'</span>: &#123;</div><div class="line">            <span class="string">'context_processors'</span>: [</div><div class="line">                <span class="string">'django.template.context_processors.debug'</span>,</div><div class="line">                <span class="string">'django.template.context_processors.request'</span>,</div><div class="line">                <span class="string">'django.contrib.auth.context_processors.auth'</span>,</div><div class="line">                <span class="string">'django.contrib.messages.context_processors.messages'</span>,</div><div class="line">                <span class="string">'social_django.context_processors.backends'</span>,    <span class="comment"># 增加这两项</span></div><div class="line">                <span class="string">'social_django.context_processors.login_redirect'</span>,</div><div class="line">            ],</div><div class="line">        &#125;,</div><div class="line">    &#125;,</div><div class="line">]</div></pre></td></tr></table></figure>
+<ul>
+<li>打开urls.py，配置如下</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">url(<span class="string">r''</span>, include(<span class="string">'social_django.urls'</span>, namespace=<span class="string">'social'</span>))</div></pre></td></tr></table></figure>
+<ul>
+<li>打开html模板文件，在需要登录的地方加入如下内容</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href="&#123;% url "social:begin" "github" %&#125;"&gt;Github登陆&lt;/a&gt;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/29/ItemCF的游戏推荐系统/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -957,7 +1119,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -968,7 +1130,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -979,7 +1141,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1057,6 +1219,19 @@
 
         
 
+
+<script>
+  	var _mtac = {};
+  	(function() {
+  		var mta = document.createElement("script");
+  		mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+  		mta.setAttribute("name", "MTAH5");
+  		mta.setAttribute("sid", "63993101");
+
+  		var s = document.getElementsByTagName("script")[0];
+  		s.parentNode.insertBefore(mta, s);
+  	})();
+</script>
 
 
 
