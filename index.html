@@ -296,6 +296,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/Nginx常用功能配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NS2250225">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Road of Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/09/Nginx常用功能配置/" itemprop="url">Nginx常用功能配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T18:35:44+08:00">
+                2017-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">Nginx</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 定义一个名为main的日志格式</span></div><div class="line"><span class="attribute">log_format</span>  main  <span class="string">'<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] "<span class="variable">$request</span>" '</span><span class="string">'<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> "<span class="variable">$http_referer</span>" '</span><span class="string">'"<span class="variable">$http_user_agent</span>" "<span class="variable">$http_x_forwarded_for</span>"'</span>;</div><div class="line"></div><div class="line"><span class="comment"># 使用名为main的格式作为access日志的格式</span></div><div class="line"><span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</div></pre></td></tr></table></figure>
+<h2 id="日志格式参数"><a href="#日志格式参数" class="headerlink" title="日志格式参数"></a>日志格式参数</h2><ul>
+<li>$remote_addr：客户端地址</li>
+<li>$remote_user：客户端用户名称</li>
+<li>$time_local：访问时间和时区</li>
+<li>$request：请求的URI和HTTP协议</li>
+<li>$http_host：浏览器输入的地址（IP或域名）</li>
+<li>$status：HTTP的请求状态</li>
+<li>$upstream_status：upstream状态</li>
+<li>$body_bytes_sent：发送给客户端文件内容大小</li>
+<li>$http_referer：URL跳转来源</li>
+<li>$http_user_agent：用户终端浏览器等信息</li>
+<li>$ssl_protocol：SSL协议版本</li>
+<li>$ssl_cipher：交换数据中的算法</li>
+<li>$upstream_addr：真正提供服务的主机地址</li>
+<li>$request_time：整个请求的总时间</li>
+<li>$upstream_resopnse_time：请求过程中，upstream响应时间</li>
+</ul>
+<hr>
+<h1 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h1><ul>
+<li>请求限制</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">http&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">#定义一个名为allips的limit_req_zone用来存储session，大小是10M内存，</span></div><div class="line">    <span class="comment">#以$binary_remote_addr 为key,限制平均每秒的请求为20个，</span></div><div class="line">    <span class="comment">#1M能存储16000个状态，rete的值必须为整数，</span></div><div class="line">    <span class="comment">#如果限制两秒钟一个请求，可以设置成30r/m</span></div><div class="line"></div><div class="line">    <span class="attribute">limit_req_zone</span> <span class="variable">$binary_remote_addr</span> zone=allips:<span class="number">10m</span> rate=20r/s;</div><div class="line">    ...</div><div class="line">    server&#123;</div><div class="line">        ...</div><div class="line">        <span class="section">location</span> &#123;</div><div class="line">            ...</div><div class="line"></div><div class="line">            <span class="comment">#限制每ip每秒不超过20个请求，漏桶数burst为5</span></div><div class="line">            <span class="comment">#brust的意思就是，如果第1秒、2,3,4秒请求为19个，</span></div><div class="line">            <span class="comment">#第5秒的请求为25个是被允许的。</span></div><div class="line">            <span class="comment">#但是如果你第1秒就25个请求，第2秒超过20的请求返回503错误。</span></div><div class="line">            <span class="comment">#nodelay，如果不设置该选项，严格使用平均速率限制请求数，</span></div><div class="line">            <span class="comment">#第1秒25个请求时，5个请求放到第2秒执行，</span></div><div class="line">            <span class="comment">#设置nodelay，25个请求将在第1秒执行。</span></div><div class="line"></div><div class="line">            <span class="attribute">limit_req</span> zone=allips burst=<span class="number">5</span> nodelay;</div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>连接限制</li>
+</ul>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># limit_zone只能定义在http作用域，limit_conn可以定义在http server location作用域</span></div><div class="line"></div><div class="line">http&#123;</div><div class="line">    ...</div><div class="line"></div><div class="line">    <span class="comment">#定义一个名为one的limit_zone,大小10M内存来存储session，</span></div><div class="line">    <span class="comment">#以$binary_remote_addr 为key</span></div><div class="line">    <span class="comment">#nginx 1.18以后用limit_conn_zone替换了limit_conn</span></div><div class="line">    <span class="comment">#且只能放在http作用域</span></div><div class="line">    <span class="attribute">limit_conn_zone</span>   one  <span class="variable">$binary_remote_addr</span>  <span class="number">10m</span>;  </div><div class="line">    ...</div><div class="line">    server&#123;</div><div class="line">        ...</div><div class="line">        <span class="section">location</span> &#123;</div><div class="line">            ...</div><div class="line">           <span class="attribute">limit_conn</span> one <span class="number">20</span>;          <span class="comment">#连接数限制</span></div><div class="line"></div><div class="line">           <span class="comment">#带宽限制,对单个连接限数，如果一个ip两个连接，就是500x2k</span></div><div class="line">           <span class="attribute">limit_rate</span> <span class="number">500k</span>;            </div><div class="line"></div><div class="line">            ...</div><div class="line">        &#125;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h1 id="防盗链配置"><a href="#防盗链配置" class="headerlink" title="防盗链配置"></a>防盗链配置</h1><ul>
+<li>在nginx.conf文件加入一个localtion配置项<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">location</span> <span class="regexp">~ .*\.(jpg|jpeg|JPG|png|gif|icon)$</span> &#123;</div><div class="line">        <span class="attribute">valid_referers</span> <span class="literal">blocked</span> www.mysite.com mysite.com;</div><div class="line">        <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</div><div class="line">            <span class="attribute">return</span> <span class="number">404</span>;</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment"># gif|jpg|jpeg|….,这些是你想要屏蔽的文件类型，可以根据情况修改。</span></div><div class="line"><span class="comment"># 只需要把文中 www.mysite.com mysite.com 修改为你允许显示 你网站图片的其他网站域名，注意中间用空格分开，而不是逗号。</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">upstream</span> backend &#123;</div><div class="line">             <span class="comment"># down 表示单前的server暂时不参与负载.</span></div><div class="line">			 <span class="comment"># weight 默认为1.weight越大，负载的权重就越大。</span></div><div class="line">             <span class="comment"># max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误.</span></div><div class="line">			 <span class="comment"># fail_timeout : max_fails次失败后，暂停的时间。</span></div><div class="line">			 <span class="comment"># backup： 其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻。</span></div><div class="line">             <span class="attribute">server</span> <span class="number">192.168.1.251</span> weight=<span class="number">10</span> down;</div><div class="line">             <span class="attribute">server</span> <span class="number">192.168.1.252</span> weight=<span class="number">20</span>;</div><div class="line">             <span class="attribute">server</span> <span class="number">192.168.1.247</span> weight=<span class="number">30</span> backup;</div><div class="line">&#125;</div><div class="line"><span class="section">server</span> &#123;</div><div class="line"></div><div class="line">        <span class="attribute">listen</span>       <span class="number">80</span>;</div><div class="line">        <span class="attribute">server_name</span>  mysite;</div><div class="line">        <span class="attribute">location</span> / &#123;</div><div class="line">             <span class="comment"># 反向代理的地址</span></div><div class="line">             <span class="attribute">proxy_pass</span> http://backend;     </div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/30/Django集成Github登陆/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1119,7 +1293,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1130,7 +1304,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1141,7 +1315,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
