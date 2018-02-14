@@ -3,7 +3,7 @@
 
 # 执行步骤
 - 打开：https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg
-- 用Android Chorm打开: https://www.ropy.site.com
+- 用Android Chorm打开: https://www.ropy.site
 - 扫码
 
 # 效果图
