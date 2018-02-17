@@ -7,4 +7,4 @@
 - 扫码
 
 # 效果图
-![](/screenshot.png)
+![](/screenshot.jpg)
