@@ -6,12 +6,14 @@
 <script src="/static/js/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden;'>
   <a-scene embedded arjs>
+    <a-assets>
+      <a-asset-item id="girl" src="/static/gltf/girl.gltf"></a-asset-item>
+    </a-assets>
+
     <a-marker preset='hiro'>
-      <a-assets>
-        <a-asset-item id="girl" src="/static/gltf/girl.gltf"></a-asset-item>
-      </a-assets>
       <a-entity gltf-model="#girl"></a-entity>
     </a-marker>
+    
     <!-- add a simple camera -->
     <a-entity camera></a-entity>
   </a-scene>
