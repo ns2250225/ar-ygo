@@ -7,9 +7,10 @@
 <body style='margin : 0px; overflow: hidden;'>
   <a-scene embedded arjs>
     <a-marker preset='hiro'>
-      <a-box src="/static/images/timg.jpg" position="0 0.5 0" rotation="0 45 45"
-        scale="1 1 1">
-      </a-box>
+      <a-assets>
+        <a-asset-item id="girl" src="/static/gltf/girl.gltf"></a-asset-item>
+      </a-assets>
+      <a-entity gltf-model="#girl"></a-entity>
     </a-marker>
     <!-- add a simple camera -->
     <a-entity camera></a-entity>
