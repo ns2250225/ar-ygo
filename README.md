@@ -6,7 +6,7 @@ AR游戏王项目
 - 扫码Marker，等待1-2分钟，由于动画加载时间较长
 
 # Marker
-![](marker.bmp)
+![](marker.png)
 
 
 # 效果图
