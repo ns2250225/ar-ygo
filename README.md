@@ -1,10 +1,13 @@
 # ns2250225.github.io
-一个基于AR.js的AR例子
+AR游戏王项目
 
 # 执行步骤
-- 打开：https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg
-- 用Android Chorm打开: https://www.ropy.site
-- 扫码，等待1-2分钟，由于动画加载时间较长
+- 用Android Chrome打开: https://www.ropy.site
+- 扫码Marker，等待1-2分钟，由于动画加载时间较长
+
+# Marker
+![](marker.bmp)
+
 
 # 效果图
-![](/screenshot.jpg)
+![](screenshot.png)
